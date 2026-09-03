@@ -48,10 +48,16 @@ h1 {
     height: 130px;
     z-index: 2;
     transform-origin: bottom center;
+    transition: transform 0.3s;
 }
 
 .fan-head.oscillating {
     animation: oscillate 4s ease-in-out infinite alternate;
+}
+
+.fan-head.broken {
+    transform: rotate(25deg);
+    filter: grayscale(1) brightness(0.5);
 }
 
 @keyframes oscillate {
@@ -144,6 +150,13 @@ h1 {
 .btn-oscillate { background-color: #475569; color: white; }
 .btn-oscillate.active { background-color: #0284c7; }
 
+.btn-repair {
+    background-color: #eab308;
+    color: #0f172a;
+    font-size: 1rem;
+    padding: 12px;
+}
+
 .display-section {
     background-color: #0f172a;
     padding: 15px;
@@ -162,6 +175,10 @@ h1 {
     font-style: italic;
     color: #f59e0b;
     font-weight: 600;
+}
+
+.desc.broken-text {
+    color: #ef4444;
 }
 
 .conversion-display {
@@ -211,3 +228,10 @@ h1 {
     cursor: not-allowed;
 }
 
+.footer {
+    margin-top: 25px;
+    font-size: 0.8rem;
+    color: #64748b;
+    border-top: 1px solid #334155;
+    padding-top: 15px;
+}
