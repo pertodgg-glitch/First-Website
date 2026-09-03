@@ -1,0 +1,213 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #0f172a;
+    color: #f8fafc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    background-color: #1e293b;
+    border-radius: 16px;
+    padding: 30px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    text-align: center;
+}
+
+h1 {
+    font-size: 1.4rem;
+    margin-bottom: 20px;
+    color: #38bdf8;
+}
+
+/* Komponen Visual Kipas */
+.fan-wrapper {
+    position: relative;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+}
+
+.fan-head {
+    position: relative;
+    width: 130px;
+    height: 130px;
+    z-index: 2;
+    transform-origin: bottom center;
+}
+
+.fan-head.oscillating {
+    animation: oscillate 4s ease-in-out infinite alternate;
+}
+
+@keyframes oscillate {
+    0% { transform: rotate(-30deg); }
+    100% { transform: rotate(30deg); }
+}
+
+.fan-cage {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border: 4px solid #64748b;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.02);
+}
+
+.fan-blades {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+
+.blade {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 16px;
+    height: 52px;
+    background: linear-gradient(180deg, #38bdf8, #0284c7);
+    border-radius: 8px;
+    transform-origin: top center;
+}
+
+.blade-1 { transform: translateX(-50%) rotate(0deg); }
+.blade-2 { transform: translateX(-50%) rotate(120deg); }
+.blade-3 { transform: translateX(-50%) rotate(240deg); }
+
+.fan-center {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    background-color: #cbd5e1;
+    border-radius: 50%;
+    z-index: 3;
+}
+
+.fan-stand {
+    width: 12px;
+    height: 50px;
+    background-color: #475569;
+    margin-top: -5px;
+}
+
+.fan-base {
+    width: 90px;
+    height: 14px;
+    background-color: #334155;
+    border-radius: 8px 8px 0 0;
+}
+
+/* Panel Kontrol */
+.control-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.power-section {
+    display: flex;
+    gap: 10px;
+}
+
+.btn {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-power { background-color: #ef4444; color: white; }
+.btn-power.active { background-color: #22c55e; }
+
+.btn-oscillate { background-color: #475569; color: white; }
+.btn-oscillate.active { background-color: #0284c7; }
+
+.display-section {
+    background-color: #0f172a;
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #334155;
+}
+
+.speed-display .value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #38bdf8;
+}
+
+.description-display { margin: 8px 0; }
+.desc {
+    font-style: italic;
+    color: #f59e0b;
+    font-weight: 600;
+}
+
+.conversion-display {
+    font-size: 0.85rem;
+    color: #94a3b8;
+    border-top: 1px solid #1e293b;
+    padding-top: 8px;
+}
+
+.unit-group span { color: #38bdf8; }
+.separator { margin: 0 6px; color: #475569; }
+
+.step-input-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+    font-size: 0.85rem;
+    color: #94a3b8;
+}
+
+.step-input-group input {
+    width: 100%;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #475569;
+    background-color: #0f172a;
+    color: white;
+    text-align: center;
+    font-size: 1rem;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.btn-action {
+    background-color: #334155;
+    color: white;
+    font-size: 1.4rem;
+}
+
+.btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
