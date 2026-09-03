@@ -23,14 +23,43 @@ let isOscillating = false;
 let isBroken = false;
 let speed = 0;
 let rotationAngle = 0;
+let currentDelta = 0; // Kecepatan putaran aktual per frame
 let animationId = null;
 
-// Fungsi Animasi
+// Fungsi Animasi dengan Efek Inersia (Perlambatan/Percepatan Bertahap)
 function animate() {
-    if (isOn && speed > 0 && !isBroken) {
-        const delta = Math.min(speed * 0.2 + 1, 45);
-        rotationAngle = (rotationAngle + delta) % 360;
+    let targetDelta = 0;
+    
+    // Tentukan target kecepatan berdasarkan status daya dan kondisi kerusakan
+    if (isOn && !isBroken && speed > 0) {
+        targetDelta = Math.min(speed * 0.2 + 1, 45);
+    }
+
+    // Interpolasi kecepatan aktual ke target kecepatan
+    if (currentDelta < targetDelta) {
+        // Percepatan saat kecepatan ditambah
+        currentDelta += Math.max(0.1, (targetDelta - currentDelta) * 0.08);
+        if (currentDelta > targetDelta) currentDelta = targetDelta;
+    } else if (currentDelta > targetDelta) {
+        // Perlambatan bertahap (efek gesekan/inersia) saat mati atau dikurangi
+        currentDelta -= Math.max(0.02, (currentDelta - targetDelta) * 0.03);
+        if (currentDelta < targetDelta) currentDelta = targetDelta;
+    }
+
+    // Putar baling-baling selama masih ada sisa kecepatan
+    if (currentDelta > 0.001) {
+        rotationAngle = (rotationAngle + currentDelta) % 360;
         fanBlades.style.transform = `rotate(${rotationAngle}deg)`;
+        animationId = requestAnimationFrame(animate);
+    } else {
+        currentDelta = 0;
+        animationId = null;
+    }
+}
+
+// Menjalankan siklus animasi jika belum aktif
+function startAnimation() {
+    if (!animationId) {
         animationId = requestAnimationFrame(animate);
     }
 }
@@ -45,7 +74,7 @@ function updateDisplay() {
     speedKmhEl.textContent = kmh.toLocaleString('id-ID', { maximumFractionDigits: 2 });
     speedMphEl.textContent = mph.toLocaleString('id-ID', { maximumFractionDigits: 2 });
 
-    // Pengecekan Kondisi Rusak (Melebihi Angin Luar Angkasa)
+    // Pengecekan Kondisi Rusak
     if (kmh > SPACE_WIND_LIMIT_KMH && !isBroken) {
         triggerBreakdown();
         return;
@@ -80,7 +109,8 @@ function triggerBreakdown() {
     isOn = false;
     isOscillating = false;
 
-    if (animationId) cancelAnimationFrame(animationId);
+    // Tetap jalankan animasi agar putaran melambat secara alami hingga berhenti
+    startAnimation();
 
     fanHead.classList.remove('oscillating');
     fanHead.classList.add('broken');
@@ -125,7 +155,7 @@ powerBtn.addEventListener('click', () => {
         btnPlus.disabled = false;
         btnMinus.disabled = false;
         oscillateBtn.disabled = false;
-        animate();
+        startAnimation();
     } else {
         powerBtn.textContent = 'Power: OFF';
         powerBtn.classList.remove('active');
@@ -137,7 +167,8 @@ powerBtn.addEventListener('click', () => {
         btnPlus.disabled = true;
         btnMinus.disabled = true;
         oscillateBtn.disabled = true;
-        if (animationId) cancelAnimationFrame(animationId);
+        // Panggil animasi untuk memproses efek perlambatan sampai henti total
+        startAnimation();
     }
     updateDisplay();
 });
@@ -163,6 +194,7 @@ btnPlus.addEventListener('click', () => {
     if (!isOn || isBroken) return;
     const step = parseFloat(stepInput.value) || 1;
     speed += Math.abs(step);
+    startAnimation();
     updateDisplay();
 });
 
@@ -171,6 +203,7 @@ btnMinus.addEventListener('click', () => {
     if (!isOn || isBroken) return;
     const step = parseFloat(stepInput.value) || 1;
     speed = Math.max(0, speed - Math.abs(step));
+    startAnimation();
     updateDisplay();
 });
 
