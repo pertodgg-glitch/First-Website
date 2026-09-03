@@ -1,11 +1,67 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-    <title>Situs Saya</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulasi Kipas Angin</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Halo, Selamat Datang!</h1>
-    <p>Ini web pertama saya yang dibuat lewat HP.</p>
+    <div class="container">
+        <h1>Simulasi Kipas Angin</h1>
+        
+        <div class="fan-wrapper">
+            <div class="fan-head" id="fanHead">
+                <div class="fan-cage">
+                    <div class="fan-blades" id="fanBlades">
+                        <div class="blade blade-1"></div>
+                        <div class="blade blade-2"></div>
+                        <div class="blade blade-3"></div>
+                    </div>
+                    <div class="fan-center"></div>
+                </div>
+            </div>
+            <div class="fan-stand"></div>
+            <div class="fan-base"></div>
+        </div>
+
+        <div class="control-panel">
+            <div class="power-section">
+                <button id="powerBtn" class="btn btn-power">Power: OFF</button>
+                <button id="oscillateBtn" class="btn btn-oscillate">Muter Kepala: OFF</button>
+            </div>
+
+            <div class="display-section">
+                <div class="speed-display">
+                    <span class="label">Kecepatan:</span>
+                    <span id="speedValue" class="value">0</span>
+                </div>
+                <div class="description-display">
+                    <span id="speedDesc" class="desc">Kipas Mati</span>
+                </div>
+                <div class="conversion-display">
+                    <div><span class="label">Kecepatan Angin:</span></div>
+                    <div class="unit-group">
+                        <span id="speedKmh">0.00</span> <strong>Km/J</strong>
+                        <span class="separator">|</span>
+                        <span id="speedMph">0.00</span> <strong>MPH</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="adjust-section">
+                <div class="step-input-group">
+                    <label for="stepInput">Nilai Pengubah (+ / -):</label>
+                    <input type="number" id="stepInput" value="1" min="1" placeholder="Isi angka step">
+                </div>
+                <div class="action-buttons">
+                    <button id="btnMinus" class="btn btn-action">-</button>
+                    <button id="btnPlus" class="btn btn-action">+</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
-
